@@ -1,5 +1,5 @@
 # Práctica 3.9: Despliegue web con bases de datos en AWS. Nivel básico.
-#### Jesús Pablo Barba Reyes, Manuel Gómez Ruiz, Adrian Baeza Rodríguez
+#### Jesús Pablo Barba Reyes (S3), Adrian Baeza Rodríguez (RDS), Manuel Gómez Ruiz (EC2)
 
 ## EC2
 
@@ -43,6 +43,44 @@
 8. Por último , cogeremos nuestra ip publica de la ec2 y la introducimos en el navegador web y añadimos /index.php de manera que quedaria algo asi "52.4.253.189/index.php"
 
 ## RDS
+
+1. Vamos a crear una base de datos en AWS. Seleccionamos crear nueva base de datos. Configuraremos la instancia de la siguiente forma:
+
+   - Versión del motor: seleccionamos MySQL, en la versión que aparece por defecto (8.0.28).
+   - Plantillas: seleccionamos la capa gratuita.
+   - Configuración: como identificador de instancia en este caso introducimos el nombre "rdspractica", como nombre de usuario introducimos "admin" y como contraseña maestra "Root1234$".
+   - Almacenamiento: seleccionamos SSD de uso general (gp2), que es la que aparece por defecto.
+   - Conectividad: seleccionaremos que no se conecte a un recurso informático EC2. En tipo de red seleccionamos IPv4, para comunicar los recursos solo por IPv4. Como VPC seleccionamos la que aparece por defecto ("default"). En configuración adicional, permitimos el acceso público para poder conectarnos desde instancias externas. En el puerto de la base de datos, introduciremos el 3306.
+
+        ![Conectividad](img/Conectividad2.png)
+
+2. Posteriormente, creamos la base de datos.
+
+    Lo siguiente que hay que realizar es configurar el Workbench con el Host de ésta RDS, para comprobar que funciona la conexión y subir la tabla "delegados". Configuramos una nueva conexión de la siguiente manera:
+
+    ![CreacionWorkbench](img/CreacionWorkbench.png)
+
+    Donde en nombre de conexion introducimos, en este caso, "conexionpracticards", en Hostname tenemos que introducir el Host de nuestra RDS de Amazon, en Username introducimos "admin" y guardamos la contraseña "Root1234$". A continuación seleccionamos "Test Connection", y nos debe aparecer una ventana que indica que funciona correctamente, como se muestra a continuación:
+
+    ![Conexion](img/ConexionCorrecta.png)
+
+    Una vez iniciado el Workbench, debemos crear un nuevo archivo sql, y pegar el código del archivo "delegado.sql". Transformamos el SQL (pulsando sobre el icono del rayo) como se muestra a continuación, para que aparezca la tabla:
+
+    ![CodDelegado](img/CodDelegado.png)
+
+    Una vez tengamos la tabla, subiremos el contenido a la base de datos de la nube, accediendo a Database --> Reverse Engineer:
+
+    ![DatabaseReverse](img/SeleccionReverse.png)
+
+    En la ventana que nos aparece introducimos los parámetros de nuestra conexión, como se muestra a continuación:
+
+    ![ReverseEngineer](img/ReverseEngineer.png)
+
+    Seguimos los pasos, seleccionamos la base de datos que queremos subir (en este caso "delegado"), y finalmente nos debe aparecer de la siguiente forma:
+
+    ![ReverseResultados](img/ReverseEngineerResultados.png)
+
+    Aquí se muestra que se ha subido la tabla del esquema "delegado". Finalizamos y ya tendríamos lista la RDS.
 
 ## S3
 
